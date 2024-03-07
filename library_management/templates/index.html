@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+</head>
+
+<body>
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Two columns with equal width */
+            gap: 10px;
+            /* Gap between grid items */
+        }
+
+        .grid-item {
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+    <div style="padding: 20px;">
+        <h1>Library Management System</h1>
+    </div>
+    <div class="grid-container">
+        <div class="grid-item">
+            {% if books | length > 0 %}
+            <h2>Search Book</h2>
+            <form action="/search_book" method="get">
+                <label for="title_or_author">Title or Author:</label>
+                <input type="text" id="title_or_author" name="title_or_author" oninput="checkInputLength()"><br>
+                <input type="submit" id="searchSubmitBtn" disabled value="Search Book">
+            </form>
+            <script>
+                function checkInputLength() {
+                    var inputText = document.getElementById('title_or_author').value;
+                    var submitBtn = document.getElementById('searchSubmitBtn');
+
+                    // Enable the submit button only if the input length is 3 or more characters
+                    submitBtn.disabled = inputText.length < 3;
+                }
+            </script>
+            {% endif %}
+            {% if searchedBooks | length > 0 %}
+            <h3>Result</h3>
+            <ul>
+                {% for searchedBook in searchedBooks %}
+                <li>{{ searchedBook.bookName }} by {{ searchedBook.authorName }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if not isStudent %}
+            <h2>Add Book</h2>
+            <form action="/add_book" method="post">
+                <label for="bookName">Title:</label>
+                <input type="text" id="bookName" name="bookName"><br>
+                <label for="authorName">Author:</label>
+                <input type="text" id="authorName" name="authorName"><br>
+                <input type="submit" value="Add Book">
+            </form>
+            {% endif %}
+        </div>
+        <div class="grid-item">
+            <h2>Books</h2>
+            <ul>
+                {% for book in books %}
+                <li>
+                    {{ book.bookName }} by {{ book.authorName }}
+                    {% if not isStudent %}
+                    <a href="#"
+                        onclick="showModal('{{ book.id }}', '{{ book.bookName }}', '{{ book.authorName }}')">Edit</a>
+                    <a href="{{ url_for('delete_book', book_id=book.id) }}">Delete</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div id="editModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Edit Book</h3>
+            <form action="/edit_book" method="post">
+                <input type="hidden" name="editBookId" id="editBookId">
+                <label for="editBookName">Title:</label>
+                <input type="text" id="editBookName" name="editBookName"><br>
+                <label for="editAuthorName">Author:</label>
+                <input type="text" id="editAuthorName" name="editAuthorName"><br>
+                <input type="submit" onClick="closeModal()" value="Save Changes">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to display modal and populate it with book data
+        function showModal(bookId, bookName, authorName) {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+            document.getElementById('editBookId').value = bookId;
+            document.getElementById('editBookName').value = bookName;
+            document.getElementById('editAuthorName').value = authorName;
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
