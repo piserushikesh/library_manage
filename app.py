@@ -15,7 +15,7 @@ def indexLibrarian():
     books = get_all_books()
     return render_template('index.html', books=books)
 
-@app.route('/student')
+@app.route('/members')
 def indexStudent():
     global isStudent
     isStudent=True
