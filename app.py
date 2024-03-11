@@ -1,8 +1,15 @@
 from flask import jsonify, make_response, request, render_template
-from library_management.functions import get_all_books, get_all_users
-from library_management import db
-from library_management import app
-from library_management.models import Users,Books
+from flask import Flask
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:password@localhost:5432/Library"
+db = SQLAlchemy(app)  
+migrate = Migrate(app,db)
+
+from models.books import Books
+from models.users import Users
 
 @app.route("/welcome")
 def welcome():
@@ -219,6 +226,17 @@ def searchBook():
     searchedBooks = Books.query.filter(Books.bookName.ilike(f'%{searchText}%') | Books.authorName.ilike(f'%{searchText}%')).all()
     # searchedBooks = searchBookFunc(searchText, books)
     return render_template('index.html', books=get_all_books(), searchedBooks=searchedBooks, isStudent=isStudent)
+
+
+def get_all_users():
+    """Get all users from the database."""
+    users = Users.query.all()
+    return users
+
+def get_all_books():
+    """Get all books from the database."""
+    books = Books.query.all()
+    return books
 
 
 if __name__ == "__main__":
