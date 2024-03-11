@@ -9,38 +9,96 @@
 
 <body>
     <style>
+       /* General styles */
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Main container styles */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Grid styles */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-item {
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        /* Form styles */
+        form {
+            margin-top: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        /* Search results styles */
+        #searchResults {
+            margin-top: 20px;
+        }
+
         /* Modal styles */
         .modal {
             display: none;
-            /* Hidden by default */
             position: fixed;
-            /* Stay in place */
             z-index: 1;
-            /* Sit on top */
             left: 0;
             top: 0;
             width: 100%;
-            /* Full width */
             height: 100%;
-            /* Full height */
             overflow: auto;
-            /* Enable scroll if needed */
             background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
         }
 
-        /* Modal content */
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
-            /* 15% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
-            /* Could be more or less, depending on screen size */
         }
 
-        /* Close button */
         .close {
             color: #aaa;
             float: right;
@@ -55,20 +113,9 @@
             cursor: pointer;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            /* Two columns with equal width */
-            gap: 10px;
-            /* Gap between grid items */
-        }
-
-        .grid-item {
-            padding: 20px;
-            border: 1px solid #ccc;
-        }
-
-        h1 {
+        h1,
+        h2,
+        h3 {
             text-align: center;
         }
     </style>
